@@ -13,3 +13,6 @@ endif
 clean:
 	rm build -rf
 	rm whisper.wasm -f
+
+download:
+	./models/download-ggml-model.sh base.en
