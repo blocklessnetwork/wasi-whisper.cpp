@@ -22,7 +22,7 @@ add_library(${TARGET} STATIC
     common-ggml.cpp
     )
 
-set(CMAKE_CXX_LINK_FLAGS "-fno-exceptions")
+set(CMAKE_CXX_LINK_FLAGS "-fno-exceptions -pthread")
 
 include(DefaultTargetOptions)
 
