@@ -1,6 +1,6 @@
 set(TARGET main)
 add_executable(${TARGET} main.cpp)
-set(CMAKE_CXX_LINK_FLAGS "-fno-exceptions")
+set(CMAKE_CXX_LINK_FLAGS "-fno-exceptions -pthread --target=wasm32-wasi-threads -Wl,--max-memory=655360000,--import-memory,--export-memory")
 
 include(DefaultTargetOptions)
 

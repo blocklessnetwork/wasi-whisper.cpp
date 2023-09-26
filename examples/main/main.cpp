@@ -54,7 +54,7 @@ void replace_all(std::string & s, const std::string & search, const std::string 
 
 // command-line parameters
 struct whisper_params {
-    int32_t n_threads    = 1;
+    int32_t n_threads    = 4;
     int32_t n_processors =  1;
     int32_t offset_t_ms  =  0;
     int32_t offset_n     =  0;

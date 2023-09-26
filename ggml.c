@@ -87,9 +87,7 @@ static int sched_yield (void) {
     return 0;
 }
 #else
-#ifndef WASI
 #include <pthread.h>
-#endif
 #include <stdatomic.h>
 
 typedef void* thread_ret_t;
@@ -3980,9 +3978,7 @@ inline static void ggml_critical_section_start(void) {
     while (processing > 0) {
         // wait for other threads to finish
         atomic_fetch_sub(&g_state_barrier, 1);
-        #ifndef WASI
         sched_yield(); // TODO: reconsider this
-        #endif
         processing = atomic_fetch_add(&g_state_barrier, 1);
     }
 }
@@ -16409,9 +16405,7 @@ static thread_ret_t ggml_graph_compute_thread(void * data) {
             // wait for other threads to finish
             const int last = node_n;
             do {
-                #ifndef WASI
                 sched_yield();
-                #endif
                 node_n = atomic_load(&state->shared->node_n);
             } while (node_n == last);
         }
@@ -16800,7 +16794,6 @@ void ggml_graph_compute(struct ggml_context * ctx, struct ggml_cgraph * cgraph) 
     }
 
     // create thread pool
-    #ifndef WASI
     if (n_threads > 1) {
         for (int j = 1; j < n_threads; ++j) {
             workers[j] = (struct ggml_compute_state) {
@@ -16813,7 +16806,6 @@ void ggml_graph_compute(struct ggml_context * ctx, struct ggml_cgraph * cgraph) 
             GGML_ASSERT(rc == 0);
         }
     }
-    #endif
     workers[0].ith = 0;
     workers[0].shared = &state_shared;
 
@@ -16827,14 +16819,12 @@ void ggml_graph_compute(struct ggml_context * ctx, struct ggml_cgraph * cgraph) 
     clear_numa_thread_affinity();
 
     // join thread pool
-    #ifndef WASI
     if (n_threads > 1) {
         for (int j = 1; j < n_threads; j++) {
             const int rc = ggml_thread_join(workers[j].thrd, NULL);
             GGML_ASSERT(rc == 0);
         }
     }
-    #endif
 
     // performance stats (graph)
     {
