@@ -1,4 +1,5 @@
 IMAGE_NAME=bls-whisper.wasi
+include ./inc.mk
 
 all: build
 
@@ -10,7 +11,9 @@ download:
 	./models/download-ggml-model.sh base.en
 
 push:
-	docker build ghcr.io/blocklessnetwork/${IMAGE_NAME}
+	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}
+	docker tag ghcr.io/blocklessnetwork/${IMAGE_NAME} ghcr.io/blocklessnetwork/${IMAGE_NAME}:${IMAGE_TAG_VERSION}
+	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}:${IMAGE_TAG_VERSION}
 
 extract_wasi:
 	docker run --name tmp.container.${IMAGE_NAME} ghcr.io/blocklessnetwork/${IMAGE_NAME} ls &>1 > /dev/null
