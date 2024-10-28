@@ -16,5 +16,5 @@ push:
 	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}:${IMAGE_TAG_VERSION}
 
 extract_wasi:
-	docker run --name tmp.container.${IMAGE_NAME} ghcr.io/blocklessnetwork/${IMAGE_NAME} ls &>1 > /dev/null || echo 1
+	docker run --name tmp.container.${IMAGE_NAME} ghcr.io/blocklessnetwork/${IMAGE_NAME} ls &>1 || echo 1
 	docker cp tmp.container.${IMAGE_NAME}:/whisper.wasm .
