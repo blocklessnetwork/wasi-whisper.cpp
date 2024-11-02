@@ -24,3 +24,7 @@ $ ffmpeg -loglevel -0 -y -i samples.ogg -ar 16000 -ac 1 -c:a pcm_s16le samples.w
 ```bash
 $ bls-runtime --fs-root-path=`pwd` whisper.wasm --  -m models/ggml-base.en.bin -f samples/jfk.wav --print-colors
 ```
+
+## Lib file
+
+The arhive file is in whisper.wasm.tar.gz, file name is libwhisper.a
