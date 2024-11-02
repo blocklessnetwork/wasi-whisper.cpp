@@ -39,7 +39,7 @@ jobs:
       - name: Extract
         run: |
           make extract_wasi
-          tar czvf whisper.wasm.tar.gz whisper.wasm
+          tar czvf whisper.wasm.tar.gz whisper.wasm libwhisper.a
       - name: upload artifact
         uses: actions/upload-release-asset@v1
         env:
