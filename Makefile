@@ -19,3 +19,4 @@ extract_wasi:
 	docker run --name tmp.container.${IMAGE_NAME} ghcr.io/blocklessnetwork/${IMAGE_NAME}:${IMAGE_TAG_VERSION} ls || echo 1
 	docker ps -a
 	docker cp tmp.container.${IMAGE_NAME}:/whisper.wasm .
+	docker cp tmp.container.${IMAGE_NAME}:/libwhisper.a .
