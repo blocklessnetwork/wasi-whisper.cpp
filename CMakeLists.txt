@@ -331,6 +331,8 @@ add_library(${TARGET}
     ${GGML_OPENCL_SOURCES}
     whisper.h
     whisper.cpp
+    dr_wav.h
+    dr_wav.c
     )
 
 include(DefaultTargetOptions)
@@ -386,7 +388,7 @@ target_compile_definitions(${TARGET} PUBLIC
     ${WHISPER_EXTRA_FLAGS}
     )
 
-set_target_properties(${TARGET} PROPERTIES PUBLIC_HEADER "whisper.h")
+set_target_properties(${TARGET} PROPERTIES PUBLIC_HEADER "whisper.h dr_wav.h")
 
 install(TARGETS ${TARGET}
     LIBRARY DESTINATION lib
