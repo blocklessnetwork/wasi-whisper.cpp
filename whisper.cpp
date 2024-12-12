@@ -19,9 +19,7 @@
 #include <fstream>
 #include <map>
 #include <string>
-#ifndef WASI 
 #include <thread>
-#endif
 #include <vector>
 #include <regex>
 #include <random>
@@ -2581,7 +2579,6 @@ static bool log_mel_spectrogram(
 
 
     {
-        #ifndef WASI
         std::vector<std::thread> workers(n_threads - 1);
         for (int iw = 0; iw < n_threads - 1; ++iw) {
             workers[iw] = std::thread(
@@ -2589,15 +2586,12 @@ static bool log_mel_spectrogram(
                     n_samples + stage_2_pad, frame_size, frame_step, n_threads,
                     std::cref(filters), std::ref(mel));
         }
-        #endif
 
         // main thread
         log_mel_spectrogram_worker_thread(0, hann, samples_padded, n_samples + stage_2_pad, frame_size, frame_step, n_threads, filters, mel);
-        #ifndef WASI
         for (int iw = 0; iw < n_threads - 1; ++iw) {
             workers[iw].join();
         }
-        #endif
     }
 
     // clamping and normalization
@@ -4845,10 +4839,7 @@ int whisper_full_parallel(
     if (n_processors == 1) {
         return whisper_full(ctx, params, samples, n_samples);
     }
-    #ifdef WASI
-    return whisper_full(ctx, params, samples, n_samples);
-    #endif
-    #ifndef WASI
+
     int ret = 0;
 
     // prepare separate states for each thread
@@ -4945,7 +4936,6 @@ int whisper_full_parallel(
     log("%s: the transcription quality may be degraded near these boundaries\n", __func__);
 
     return ret;
-    #endif
 }
 
 int whisper_full_n_segments_from_state(struct whisper_state * state) {
